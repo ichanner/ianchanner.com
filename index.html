@@ -39,7 +39,7 @@
 		const name = document.createTextNode(title)
 
 		div.appendChild(link)
-		link.href = 'http://localhost:5000/posts/' + id
+		link.href = 'https://ianchanner.herokuapp.com/posts/' + id
 		link.appendChild(name)
 		container.appendChild(br)
 		container.appendChild(div)
@@ -61,7 +61,7 @@
 	$(document).ready(function () {
 
 	    if (localStorage.getItem("scroll") != null) {
-	    	console.log('set')
+
 	        $(window).scrollTop(localStorage.getItem("scroll"));
 	    }
 
