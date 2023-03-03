@@ -1,0 +1,60 @@
+
+body{
+
+	background-color: black;
+}
+
+*{
+
+	color:white;
+}
+
+a{
+
+	color:blue;
+}
+
+textarea{
+
+	display: block;	
+	font-size: 20px;
+	color:black;
+}
+
+#title_input{
+
+	color:black;
+}
+
+#blog{
+
+	font-size: 40px;
+	padding: 20px;
+}
+
+#post{
+
+	color: black;
+}
+
+#back{
+
+
+	color:black;
+	position: fixed;
+	margin: 5px;
+}
+
+#container{
+
+	padding: 20px;
+	font-size: 20px;
+	line-height: 2;
+}
+
+#bg{
+
+	display: block;
+	height: 50%;
+	width:50%;
+}

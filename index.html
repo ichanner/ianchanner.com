@@ -1,0 +1,80 @@
+
+<!DOCTYPE Html>
+
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Ian Channer</title>
+	<link type="text/css" rel='stylesheet' href='../styles.css'/>
+</head>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<body>
+
+	<center>
+		
+		<h1> Ian Channer Dot Com </h1>
+		<i> DISCLAIMER: Any actual names or likenesses of celebrities are used in a fictitious and parodic manner</i>
+
+		<div id="blog"/>
+
+	</center>
+
+</body>
+
+<script type="text/javascript">
+
+	var index = 0;
+
+	const container = document.getElementById('blog')
+
+	function createPreview(title, id){
+
+		const div = document.createElement('div')
+		const br = document.createElement('br')
+		const link = document.createElement('a')
+		const name = document.createTextNode(title)
+
+		div.appendChild(link)
+		link.href = 'http://localhost:5000/posts/' + id
+		link.appendChild(name)
+		container.appendChild(br)
+		container.appendChild(div)
+	}
+			
+	function loadPreviews(){
+
+		axios.get('/articles', {index: index}).then((res)=>{;
+
+			res.data.forEach((article)=>{
+
+				index+=1;
+
+				createPreview(article.title, article.id)
+			})
+		})
+	}
+
+	$(document).ready(function () {
+
+	    if (localStorage.getItem("scroll") != null) {
+	    	console.log('set')
+	        $(window).scrollTop(localStorage.getItem("scroll"));
+	    }
+
+	    $(window).on("scroll", function() {
+	        localStorage.setItem("scroll", $(window).scrollTop());
+	    });
+
+  	});
+
+	loadPreviews()
+
+</script>
+
+</html>
+
+
