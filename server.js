@@ -64,7 +64,7 @@ app.get('/articles', async(req, res)=>{
 
 	const articles = await db.collection('articles')
 	.find({})
-	.sort({date: 1})
+	.sort({date: -1})
 	.skip(Number(index))
 	.limit(100)
 	.toArray()
