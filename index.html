@@ -38,12 +38,13 @@
 		const link = document.createElement('a')
 		const name = document.createTextNode(title)
 
+		/*
 		link.setAttribute('article_id', id)
 		link.onclick = function(){
 
 			return axios.post('/view', {id:  this.getAttribute('article_id')})
 		}
-
+		*/
 		div.appendChild(link)
 		link.href = '/posts/' + id
 		link.appendChild(name)

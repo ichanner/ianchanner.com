@@ -77,6 +77,8 @@ app.get('/articles', async(req, res)=>{
 	res.json(articles)
 })
 
+/*
+
 app.post('/view', async(req, res)=>{
 
 	const {id} = req.body
@@ -84,12 +86,13 @@ app.post('/view', async(req, res)=>{
 
 	res.end()
 })
+*/
 
 app.get('/articles/:id', async(req, res)=>{	
 
 	const {id} = req.params 
 
-//	await db.collection('articles').updateOne({id: id}, {$inc: {views: 1}} )
+	await db.collection('articles').updateOne({id: id}, {$inc: {views: 1}} )
 	const article = await db.collection('articles').findOne({id: id})
 
 	res.json(article)
