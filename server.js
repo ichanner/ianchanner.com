@@ -14,6 +14,9 @@ const app = express()
 
 let db
 
+//create auth for posting
+//loading 
+
 new Promise ((resolve, reject)=>{
 
 	return MongoClient.connect(process.env.DB_URI,{ 
@@ -74,11 +77,19 @@ app.get('/articles', async(req, res)=>{
 	res.json(articles)
 })
 
+app.post('/view', async(req, res)=>{
+
+	const {id} = req.body
+	await db.collection('articles').updateOne({id: id}, {$inc: {views: 1}})
+
+	res.end()
+})
+
 app.get('/articles/:id', async(req, res)=>{	
 
 	const {id} = req.params 
 
-	await db.collection('articles').updateOne({id: id}, {$inc: {views: 1}} )
+//	await db.collection('articles').updateOne({id: id}, {$inc: {views: 1}} )
 	const article = await db.collection('articles').findOne({id: id})
 
 	res.json(article)
@@ -88,40 +99,16 @@ app.post('/post', async(req, res)=>{
 
 	const {title, body} = req.body
 	const id = crypto.randomBytes(5).toString('hex')
-	const date = new Date()
+	const date = new Date().toLocaleTimeString('en-EN', {
+		timeZone: 'EST', 
+		hour: '2-digit',
+		minute:'2-digit', 
+		month:'numeric', 
+		year:'numeric', 
+		day:'numeric'
+	});
 
-	await db.collection('articles').insertOne({id: id, title: title, body: body, date: Date.now(), created_at: date.toLocaleString() , views: 0})
-
-	res.end()
-})
-
-app.post('/comment', async(req, res)=>{
-
-	const {comment, article_id, name} = req.body
-	const id = crypto.randomBytes(5).toString('hex')
-	const date = new Date()
-
-	await db.collection('comments').insertOne({
-		id: id, 
-		article_id: article_id, 
-		comment: comment, 
-		date: Date.now(), 
-		created_at: date.toLocaleString()
-	})
+	await db.collection('articles').insertOne({id: id, title: title, body: body, date: Date.now(), created_at: date , views: 0})
 
 	res.end()
-})
-
-app.get('/comments/:id', async(req, res)=>{
-
-	const {id, index} = req.body
-
-	const comments = await db.collection('comments')
-	.find({article_id: id})
-	.sort({date: -1})
-	.skip(index)
-	.limit(100)
-	.toArray()
-
-	res.json(comments).end()
 })
