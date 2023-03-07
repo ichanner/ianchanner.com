@@ -62,6 +62,8 @@ app.get('/articles', async(req, res)=>{
 
 	const {index} = req.body
 
+	console.log(req.body)
+
 	const articles = await db.collection('articles')
 	.find({})
 	.sort({date: -1})
@@ -91,4 +93,35 @@ app.post('/post', async(req, res)=>{
 	await db.collection('articles').insertOne({id: id, title: title, body: body, date: Date.now(), created_at: date.toLocaleString() , views: 0})
 
 	res.end()
+})
+
+app.post('/comment', async(req, res)=>{
+
+	const {comment, article_id, name} = req.body
+	const id = crypto.randomBytes(5).toString('hex')
+	const date = new Date()
+
+	await db.collection('comments').insertOne({
+		id: id, 
+		article_id: article_id, 
+		comment: comment, 
+		date: Date.now(), 
+		created_at: date.toLocaleString()
+	})
+
+	res.end()
+})
+
+app.get('/comments/:id', async(req, res)=>{
+
+	const {id, index} = req.body
+
+	const comments = await db.collection('comments')
+	.find({article_id: id})
+	.sort({date: -1})
+	.skip(index)
+	.limit(100)
+	.toArray()
+
+	res.json(comments).end()
 })

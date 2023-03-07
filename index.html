@@ -6,7 +6,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Ian Channer</title>
-	<link type="text/css" rel='stylesheet' href='../styles.css'/>
+	<link rel="stylesheet" href="https://latex.now.sh/style.css">
 </head>
 
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -19,7 +19,7 @@
 		<h1> Ian Channer Dot Com </h1>
 		<i> DISCLAIMER: Any actual names or likenesses of celebrities are used in a fictitious and parodic manner</i>
 
-		<div id="blog"/>
+		<div class="blog" id="blog"/>
 
 	</center>
 
@@ -28,7 +28,7 @@
 <script type="text/javascript">
 
 	var index = 0;
-
+	var ids = []
 	const container = document.getElementById('blog')
 
 	function createPreview(title, id){
@@ -49,9 +49,14 @@
 
 		axios.get('/articles', {index: index}).then((res)=>{;
 
-			res.data.forEach((article)=>{
+			res.data.forEach((article, i)=>{
+				
+				if(!ids.includes(article.id)){
 
-				index+=1;
+					ids.push(article.id)
+					index+=1;
+					console.log(index)
+				}
 
 				createPreview(article.title, article.id)
 			})
@@ -66,10 +71,20 @@
 	    }
 
 	    $(window).on("scroll", function() {
+
 	        localStorage.setItem("scroll", $(window).scrollTop());
 	    });
 
+	    $(window).scroll(function() {
+  			
+  			if ($(window).scrollTop() >= (($(document).height() - $(window).height()) - $('#blog').innerHeight())) {
+    			
+    			//loadPreviews()
+  			}
+		});
+
   	});
+
 
 	loadPreviews()
 
