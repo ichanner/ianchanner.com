@@ -39,8 +39,8 @@
 	const container = document.getElementById('container')
 	const title = document.getElementById('title')
 	const reads = document.getElementById('reads')
-	const meta_desc = document.querySelector('meta[name="og:description"]')
-	const meta_title = document.querySelector('meta[name="og:title"]')
+	const meta_desc = document.querySelector('meta[property="og:description"]')
+	const meta_title = document.querySelector('meta[property="og:title"]')
 	const url = new URL(window.location.href)
 	const paths = String(url).split('/')
 	const id = paths[paths.length-1]
