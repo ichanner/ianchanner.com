@@ -5,6 +5,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Something">
+	<meta name="title" content="Something">
 	<title>Ian Channer</title>
 	<link rel="stylesheet" href="https://latex.now.sh/style.css">
 
@@ -37,6 +39,8 @@
 	const container = document.getElementById('container')
 	const title = document.getElementById('title')
 	const reads = document.getElementById('reads')
+	const meta_desc = document.querySelector('meta[name="description"]')
+	const meta_title = document.querySelector('meta[name="title"]')
 	const url = new URL(window.location.href)
 	const paths = String(url).split('/')
 	const id = paths[paths.length-1]
@@ -46,8 +50,11 @@
 		axios.get('/article/'+id+'?is_refresh='+is_refresh).then((res)=>{
 
 			title.appendChild(document.createTextNode(res.data.title))
-			reads.appendChild(document.createTextNode(	res.data.views + " Views"))
+			reads.appendChild(document.createTextNode(res.data.views + " Views"))
      		date.appendChild(document.createTextNode(res.data.created_at))
+
+     		meta_desc.setAttribute('content', res.data.body)
+     		meta_title.setAttribute('content', res.data.title)
 	
 			container.innerHTML = res.data.body
 		})
