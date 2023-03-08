@@ -78,8 +78,10 @@ app.get('/articles/:index', async(req, res)=>{
 app.get('/article/:id', async(req, res)=>{	
 
 	const {id} = req.params 
+	const {is_refresh} = req.query
 
-	await db.collection('articles').updateOne({id: id}, {$inc: {views: 1}} )
+	if(is_refresh=='false') await db.collection('articles').updateOne({id: id}, {$inc: {views: 1}} )
+	
 	const article = await db.collection('articles').findOne({id: id})
 
 	res.json(article)

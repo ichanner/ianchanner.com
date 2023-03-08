@@ -9,7 +9,7 @@
 	<link rel="stylesheet" href="https://latex.now.sh/style.css">
 
 </head>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <body>
 
@@ -41,16 +41,25 @@
 	const paths = String(url).split('/')
 	const id = paths[paths.length-1]
 
+	function loadArticle(is_refresh){
 
+		axios.get('/article/'+id+'?is_refresh='+is_refresh).then((res)=>{
 
-	axios.get('/article/'+id, {}).then((res)=>{
+			title.appendChild(document.createTextNode(res.data.title))
+			reads.appendChild(document.createTextNode(	res.data.views + " Views"))
+     		date.appendChild(document.createTextNode(res.data.created_at))
+	
+			container.innerHTML = res.data.body
+		})
+	}
 
-		title.appendChild(document.createTextNode(res.data.title))
-		reads.appendChild(document.createTextNode(	res.data.views + " Views"))
-     	date.appendChild(document.createTextNode(res.data.created_at))
+	$(document).ready(function () {
+
+		const is_refresh = (performance.navigation.type === 0)
 		
-		container.innerHTML = res.data.body
-	})
+		loadArticle(is_refresh)
+	  
+  	});
 
 </script>
 
