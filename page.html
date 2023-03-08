@@ -5,8 +5,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Something">
-	<meta name="title" content="Something">
+	<meta name="og:description">
+	<meta name="og:title">
 	<title>Ian Channer</title>
 	<link rel="stylesheet" href="https://latex.now.sh/style.css">
 
@@ -39,8 +39,8 @@
 	const container = document.getElementById('container')
 	const title = document.getElementById('title')
 	const reads = document.getElementById('reads')
-	const meta_desc = document.querySelector('meta[name="description"]')
-	const meta_title = document.querySelector('meta[name="title"]')
+	const meta_desc = document.querySelector('meta[name="og:description"]')
+	const meta_title = document.querySelector('meta[name="og:title"]')
 	const url = new URL(window.location.href)
 	const paths = String(url).split('/')
 	const id = paths[paths.length-1]
