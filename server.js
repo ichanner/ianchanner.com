@@ -116,7 +116,7 @@ app.use((err, req, res, next)=>{
 
 	if(err.status == 404){
 
-		res.send('<center>'+err.message+'</center>').status(err.status)
+		res.send('<center>'+err.message+'</center>').status(err.status).end()
 	}
 	else{
 

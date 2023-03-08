@@ -55,9 +55,11 @@
 
 	$(document).ready(function () {
 
+		console.log(performance.navigation.type)
+
 		if (performance.navigation.type === 0) {
 			
-			loadArticle(performance.navigation.type === 0)
+			loadArticle(false)
 		}
 		else if(performance.navigation.type === 1){
 
