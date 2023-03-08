@@ -50,7 +50,6 @@
 		const strippedBody = res.data.body.replace(/(<([^>]+)>)/gi, "");
 		meta_desc.setAttribute('content', strippedBody);
 		meta_title.setAttribute('content', strippedTitle);
-		window.location.reload();
 	})
 
 	function loadArticle(is_refresh){
