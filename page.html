@@ -35,7 +35,6 @@
 
 <script type="text/javascript">
 	
-	var userNavigatedBack = false
 	const container = document.getElementById('container')
 	const title = document.getElementById('title')
 	const reads = document.getElementById('reads')
@@ -45,6 +44,15 @@
 	const paths = String(url).split('/')
 	const id = paths[paths.length-1]
 
+	axios.get('/article/'+id+'?is_refresh=false').then((res)=>{
+
+		const strippedTitle = res.data.title.replace(/(<([^>]+)>)/gi, "");
+		const strippedBody = res.data.body.replace(/(<([^>]+)>)/gi, "");
+		meta_desc.setAttribute('content', strippedBody);
+		meta_title.setAttribute('content', strippedTitle);
+		window.location.reload();
+	})
+
 	function loadArticle(is_refresh){
 
 		axios.get('/article/'+id+'?is_refresh='+is_refresh).then((res)=>{
@@ -52,9 +60,6 @@
 			title.appendChild(document.createTextNode(res.data.title))
 			reads.appendChild(document.createTextNode(res.data.views + " Views"))
      		date.appendChild(document.createTextNode(res.data.created_at))
-
-     		meta_desc.setAttribute('content', res.data.body)
-     		meta_title.setAttribute('content', res.data.title)
 	
 			container.innerHTML = res.data.body
 		})
