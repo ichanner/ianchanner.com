@@ -31,8 +31,6 @@
 
 	</center>
 
-</body>
-
 <script type="text/javascript">
 	
 	const container = document.getElementById('container')
@@ -44,12 +42,13 @@
 	const paths = String(url).split('/')
 	const id = paths[paths.length-1]
 
-	axios.get('/article/'+id+'?is_refresh=false').then((res)=>{
+	axios.get('/article/'+id+'?is_refresh=true').then((res)=>{
 
 		const strippedTitle = res.data.title.replace(/(<([^>]+)>)/gi, "");
 		const strippedBody = res.data.body.replace(/(<([^>]+)>)/gi, "");
 		meta_desc.setAttribute('content', strippedBody);
 		meta_title.setAttribute('content', strippedTitle);
+		window.location.refresh()
 	})
 
 	function loadArticle(is_refresh){
@@ -80,5 +79,7 @@
   	});
 
 </script>
+
+</body>
 
 </html>
