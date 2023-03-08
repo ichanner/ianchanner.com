@@ -14,7 +14,7 @@
 <body>
 
 
-	<button id='back' onclick="location.href = '/'">Back</button>
+	<button id='back' onclick="location.href='/'">Back</button>
 
 	<center>
 
@@ -32,7 +32,8 @@
 </body>
 
 <script type="text/javascript">
-		
+	
+	var userNavigatedBack = false
 	const container = document.getElementById('container')
 	const title = document.getElementById('title')
 	const reads = document.getElementById('reads')
@@ -40,7 +41,9 @@
 	const paths = String(url).split('/')
 	const id = paths[paths.length-1]
 
-	axios.get('/articles/'+id, {}).then((res)=>{
+
+
+	axios.get('/article/'+id, {}).then((res)=>{
 
 		title.appendChild(document.createTextNode(res.data.title))
 		reads.appendChild(document.createTextNode(	res.data.views + " Views"))
