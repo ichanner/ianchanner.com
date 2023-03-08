@@ -55,9 +55,14 @@
 
 	$(document).ready(function () {
 
-		const is_refresh = (performance.navigation.type === 0)
-		
-		loadArticle(is_refresh)
+		if (performance.navigation.type === 0) {
+			
+			loadArticle(performance.navigation.type === 0)
+		}
+		else if(performance.navigation.type === 1){
+
+			loadArticle(true)
+		}
 	  
   	});
 
