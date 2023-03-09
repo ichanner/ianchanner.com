@@ -61,7 +61,7 @@ app.get('/count', async(req, res)=>{
 app.get('/articles/:index', async(req, res)=>{
 
 	const {index} = req.params
-	const {first_time} = req.query 
+	const {first_time} = req.query
 	const skip = first_time == 'true' ? 0 : index
 	const limit = first_time == 'true' ? (Number(index) < 10 ? 10 : index) : 10
 		

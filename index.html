@@ -50,14 +50,13 @@
 			
 	function loadPreviews(first_time){
 
-		const next = first_time ? (Number(sessionStorage.getItem('index'))+1 || 0) : index+1
+		const next = first_time ? (Number(sessionStorage.getItem('index')) || 0) : index
 
 		axios.get('/articles/'+next.toString()+'?first_time='+first_time).then((res)=>{
 
 			res.data.forEach((article, i)=>{
 			
 				index+=1;
-				
 				if(count-1 == index) load_button.remove()
 				sessionStorage.setItem('index', index)
 				createPreview(article.title, article.id)
@@ -75,8 +74,6 @@
 
 	$(document).ready(function () {
 
-		//if (performance.navigation.type === 0 || performance.navigation.type === 1) {}
-
 	  	$(window).on("scroll", function() {
 
 	        sessionStorage.setItem("scroll", $(window).scrollTop());
@@ -87,7 +84,6 @@
 	axios.get('/count').then((res)=>{
 
 		count = res.data;
-		console.log('s')
 		loadPreviews(true)
 	})
 
