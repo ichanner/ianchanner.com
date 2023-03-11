@@ -652,6 +652,26 @@ h6 {
   margin-bottom: 0.8rem;
 }
 
+.hr-sect {
+  display: flex;
+  flex-basis: 100%;
+  align-items: center;
+  color: rgba(0, 0, 0, 1);
+  font-size: 15px;
+  margin: 0px 0px;
+}
+.hr-sect::before,
+.hr-sect::after {
+  content: "";
+  flex-grow: 1;
+  background: rgba(0, 0, 0, 0.2);
+  height: .5px;
+  font-size: 15px;
+  line-height: 0px;
+  margin: 0px 13px;
+
+}
+
 hr{
    border: 0;
    height: 0;

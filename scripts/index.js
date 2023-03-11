@@ -41,16 +41,25 @@ function loadPreviews(first_time){
 
 			    if(last_day){
 
-				const hr = document.createElement('hr')
-				container.appendChild(hr)
+				//const hr = document.createElement('hr')
+				//container.appendChild(hr)
 			    }
 
-			    const date_header = document.createElement('p')
-			    date_header.setAttribute('class', 'center')
-			    const recent_text = day == today ? 'Today' : date.toLocaleDateString()
+			   // const date_header = document.createElement('p')
+			    //date_header.setAttribute('class', 'center')
+
+			    const date_break = document.createElement('div')
+			    const date_text = day == today ? 'Today' : article.created_at.split(',')[0]
+			    const text_node = document.createTextNode(date_text)
+
+			    date_break.setAttribute('class', 'hr-sect')
+			    date_break.appendChild(text_node)
+
+			   // date_header.appendChild(document.createTextNode(recent_text))
+			   // container.appendChild(date_header)
+
+			    container.appendChild(date_break)
 			   
-			    date_header.appendChild(document.createTextNode(recent_text))
-			    container.appendChild(date_header)
 			    createPreview(article.title, article.id)
 			    last_day = day
 			}
