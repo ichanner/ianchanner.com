@@ -5,8 +5,6 @@ import dotenv from 'dotenv'
 import crypto from 'crypto'
 import {MongoClient} from "mongodb";
 import {fileURLToPath} from 'url';
-import cors from "cors"
-import requestIp from "request-ip"
 
 const env = dotenv.config()
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -15,21 +13,21 @@ let db
 
 MongoClient.connect(process.env.DB_URI,{ 
 			
-		useNewUrlParser: true, 
-		useUnifiedTopology: true
+	useNewUrlParser: true, 
+	useUnifiedTopology: true
 
 }).then((conn)=>{
 
 	db = conn.db('ianchanner')
 })
 
-app.use(cors())
 app.use(express.urlencoded({extended: true}))
 app.use(express.json())
-app.set('views', __dirname)
-app.use(express.static(__dirname));
+app.use(express.static(__dirname))
+//app.use(express.static(__dirname + '/public'))
+//app.use(express.static(__dirname + '/node_modules'))
+app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'jade')
-app.set('trust proxy', true)
 
 app.listen(process.env.PORT || 3000, ()=>{
 
@@ -38,17 +36,17 @@ app.listen(process.env.PORT || 3000, ()=>{
 
 app.get('/create', (req, res)=>{
 
-	res.sendFile(path.join(__dirname, "/create.html"))
+	res.sendFile(path.join(__dirname, "views", "create.html"))
 })
 
 app.get('/', (req, res)=>{
 
-	res.sendFile(path.join(__dirname, "/index.html"))
+	res.sendFile(path.join(__dirname, "views", "index.html"))
 })	
 
 app.get('/posts/:id', (req, res)=>{
 
-	res.sendFile(path.join(__dirname, "/page.html"))
+	res.sendFile(path.join(__dirname, "views", "page.html"))
 })
 
 app.get('/count', async(req, res)=>{
@@ -62,8 +60,9 @@ app.get('/articles/:index', async(req, res)=>{
 
 	const {index} = req.params
 	const {first_time} = req.query
+	const max = 10
 	const skip = first_time == 'true' ? 0 : index
-	const limit = first_time == 'true' ? (Number(index) < 10 ? 10 : index) : 10
+	const limit = first_time == 'true' ? (Number(index) < max ? max : index) : max
 		
 	const articles = await db.collection('articles')
 	.find({})
