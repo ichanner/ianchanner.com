@@ -45,7 +45,8 @@ function loadPreviews(first_time){
 				container.appendChild(hr)
 			    }
 
-			    const date_header = document.createElement('div')
+			    const date_header = document.createElement('p')
+			    date_header.setAttribute('class', 'center')
 			    const recent_text = day == today ? 'Today' : date.toLocaleDateString()
 			   
 			    date_header.appendChild(document.createTextNode(recent_text))
