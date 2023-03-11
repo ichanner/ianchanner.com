@@ -1,5 +1,6 @@
 var index = 0;
 var count = 0;
+var last_day = null;
 const load_button =  document.getElementById('load')
 const container = document.getElementById('blog')	
 
@@ -27,12 +28,39 @@ function loadPreviews(first_time){
 		
 			index+=1;
 			if(count-1 == index) load_button.remove()
+
 			sessionStorage.setItem('index', index)
-			createPreview(article.title, article.id)
+
+			const date = new Date(article.created_at)
+			const today = new Date().toLocaleDateString('en-EN', {timeZone: 'EST', day:'numeric'})
+			const day = date.getDate()
+			
+			if(day != last_day){
+
+			    container.appendChild(document.createElement('br'))
+
+			    if(last_day){
+
+				const hr = document.createElement('hr')
+				container.appendChild(hr)
+			    }
+
+			    const date_header = document.createElement('div')
+			    const recent_text = day == today ? 'Today' : date.toLocaleDateString()
+			   
+			    date_header.appendChild(document.createTextNode(recent_text))
+			    container.appendChild(date_header)
+			    createPreview(article.title, article.id)
+			    last_day = day
+			}
+			else{
+
+			    createPreview(article.title, article.id)
+			}
 
 			if(i == res.data.length-1){
 
-				if (sessionStorage.getItem("scroll") != null) {
+			    if (sessionStorage.getItem("scroll") != null) {
 
 			        $(window).scrollTop(sessionStorage.getItem("scroll"));
 			    }
