@@ -17,6 +17,8 @@ function loadArticle(is_refresh){
 	})
 }
 
+function postComment()
+
 $(document).ready(function () {
 
 	const type = performance.navigation.type

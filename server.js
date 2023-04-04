@@ -49,6 +49,11 @@ app.get('/posts/:id', (req, res)=>{
 	res.sendFile(path.join(__dirname, "views", "page.html"))
 })
 
+app.get('/giveaway', (req, res)=>{
+
+	res.sendFile(path.join(__dirname, "views", "giveaway.html"))
+})
+
 app.get('/count', async(req, res)=>{
 
 	const count = await db.collection('articles').count()
@@ -103,6 +108,97 @@ app.post('/post', async(req, res)=>{
 
 	res.end()
 })
+
+app.post('/comment', async(req, res)=>{
+
+	const {id, comment, name} = req.body 
+
+	await db.collection('articles').updateOne({id: id}, 
+
+		{ comments: 
+
+			{$push: {id: uuid(), name: name, comment: comment, reply: false, replies: []} 
+		} 
+	})
+
+})
+
+app.post('/reply', async(req, res)=>{
+
+	const {id, comment_id, name, comment} = req.body 
+
+	await db.collection('articles').updateOne({id: id}, 
+
+		{
+			$push: { 'comments.$[comment].replies': 
+
+				{
+					id: uuid(), name: name, comment: comment, reply: true, replies: []
+				} 
+		} 
+	
+	}, {arrayFilters:[{'comment.id': comment_id}]})
+})
+
+app.post('/giveaway', async(req, res)=>{
+
+	const {name} = req.body
+
+	const exists = await db.collection('giveaway').findOne({name: name})
+
+	if(!exists){
+
+		await db.collection('giveaway').insertOne({name: name})
+	}
+
+	res.end()
+})
+
+/*
+app.get('/comments/:article_id/:comment_id', async(req, res)=>{
+
+	const {article_id, comment_id} = req.params 
+
+	if(comment_id == null){
+
+		const comments = db.collection('articles').aggregate([
+
+			{$match: {id: article_id}},
+
+			{
+
+				{$filter:{
+
+					input: 'comments',
+					as: 'comment',
+					cond:{ $eq:[article_id, '$$comment.id'] }
+				}}
+			}
+		])
+
+
+	}
+	else{
+
+		const replies = db.collection('articles').aggregate([
+
+			{$match: {id: article_id}},
+
+			{
+
+				{$filter:{
+
+					input: 'comments',
+					as: 'comment',
+					cond:{ $eq:[comment_id, '$$comment.id'] }
+				}}
+			}
+		])
+	}
+
+})
+
+*/
 
 app.use((req, res, next)=>{
 
