@@ -142,13 +142,13 @@ app.post('/reply', async(req, res)=>{
 
 app.post('/giveaway', async(req, res)=>{
 
-	const {name} = req.body
+	const {name, wit} = req.body
 
 	const exists = await db.collection('giveaway').findOne({name: name})
 
 	if(!exists){
 
-		await db.collection('giveaway').insertOne({name: name})
+		await db.collection('giveaway').insertOne({name: name, wit: wit})
 	}
 
 	res.end()
