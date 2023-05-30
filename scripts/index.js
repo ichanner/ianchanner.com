@@ -22,8 +22,9 @@ function createPreview(title, id){
 function loadPreviews(first_time){
 
 	const next = first_time ? (Number(sessionStorage.getItem('index')) || 0) : index
+	const is_auth = localStorage.getItem('is_auth') || false
 
-	axios.get('/articles/'+next.toString()+'?first_time='+first_time).then((res)=>{
+	axios.get('/articles/'+next.toString()+'?first_time='+first_time+'&is_auth='+is_auth).then((res)=>{
 
 		res.data.forEach((article, i)=>{
 		
@@ -64,6 +65,15 @@ function loadPreviews(first_time){
 			    }
 			}
 		})
+	}).catch((err)=>{
+
+		if(err.response){
+
+		    if(err.response.status == 403){
+
+		    	location.href = '/login'
+		    }
+		}
 	})
 }
 
@@ -79,5 +89,6 @@ $(document).ready(function () {
 axios.get('/count').then((res)=>{
 
 	count = res.data;
+	
 	loadPreviews(true)
 })

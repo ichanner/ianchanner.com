@@ -34,6 +34,25 @@ app.listen(process.env.PORT || 3000, ()=>{
 	console.log('Server initialized!')
 })
 
+app.post('/auth', async(req, res)=>{
+
+	const {password} = req.body
+
+	if(password == '1776'){
+
+		res.end()
+	}
+	else{
+
+		res.status(403).send()
+	}
+})
+
+app.get('/login', (req, res)=>{
+
+	res.sendFile(path.join(__dirname, "views", "login.html"))
+})
+
 app.get('/create', (req, res)=>{
 
 	res.sendFile(path.join(__dirname, "views", "create.html"))
@@ -49,11 +68,6 @@ app.get('/posts/:id', (req, res)=>{
 	res.sendFile(path.join(__dirname, "views", "page.html"))
 })
 
-app.get('/giveaway', (req, res)=>{
-
-	res.sendFile(path.join(__dirname, "views", "giveaway.html"))
-})
-
 app.get('/count', async(req, res)=>{
 
 	const count = await db.collection('articles').count()
@@ -64,19 +78,27 @@ app.get('/count', async(req, res)=>{
 app.get('/articles/:index', async(req, res)=>{
 
 	const {index} = req.params
-	const {first_time} = req.query
+	const {first_time, is_auth} = req.query
 	const max = 10
 	const skip = first_time == 'true' ? 0 : index
 	const limit = first_time == 'true' ? (Number(index) < max ? max : index) : max
-		
-	const articles = await db.collection('articles')
-	.find({})
-	.sort({date: -1})
-	.skip(Number(skip))
-	.limit(Number(limit))
-	.toArray()
 
-	res.json(articles)
+	if(is_auth == 'false'){
+
+		res.status(403).send()
+	}
+	else{
+		
+		const articles = await db.collection('articles')
+		.find({})
+		.sort({date: -1})
+		.skip(Number(skip))
+		.limit(Number(limit))
+		.toArray()
+
+		res.json(articles)
+	}
+	
 })
 
 app.get('/article/:id', async(req, res)=>{	
@@ -138,20 +160,6 @@ app.post('/reply', async(req, res)=>{
 		} 
 	
 	}, {arrayFilters:[{'comment.id': comment_id}]})
-})
-
-app.post('/giveaway', async(req, res)=>{
-
-	const {name, wit} = req.body
-
-	const exists = await db.collection('giveaway').findOne({name: name})
-
-	if(!exists){
-
-		await db.collection('giveaway').insertOne({name: name, wit: wit})
-	}
-
-	res.end()
 })
 
 /*
