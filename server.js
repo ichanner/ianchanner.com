@@ -37,10 +37,9 @@ app.listen(process.env.PORT || 3000, ()=>{
 app.post('/auth', async(req, res)=>{
 
 	const {password, username} = req.body
-	const bf = new Blowfish(process.env.SECRET_KEY, Blowfish.MODE.ECB, Blowfish.PADDING.NULL);
-	const encoded_pswd = bf.encode(password)
-	const user = await db.collection('users').findOne({username: username, password: encoded_pswd})
-
+	const bf = new Blowfish(process.env.SECRET_KEY);
+	//const encoded_pswd = bf.encode(password)
+	const user = await db.collection('users').findOne({username: username, password: password})
 	if(user){
 
 		jwt.sign({ role: user.role }, process.env.SECRET_KEY, (err, token)=>{
@@ -96,7 +95,7 @@ app.get('/articles/:index', async(req, res)=>{
 	const skip = first_time == 'true' ? 0 : index
 	const limit = first_time == 'true' ? (Number(index) < max ? max : index) : max
 	
-	jwt.verify(token, process.env.SECRET_KEY, (err, decoded)=>{
+	jwt.verify(token, process.env.SECRET_KEY, async(err, decoded)=>{
 
 		if(err){
 
@@ -133,9 +132,9 @@ app.post('/post', async(req, res)=>{
 
 	const {title, body, token} = req.body
 
-	jwt.verify(token, process.env.SECRET_KEY, (err, decoded)=>{
+	jwt.verify(token, process.env.SECRET_KEY, async(err, decoded)=>{
 
-		if(err || decoded.role != 'writer'){
+		if(!err && decoded.role == 'writer'){
 
 			const id = crypto.randomBytes(5).toString('hex')
 			const date = new Date().toLocaleTimeString('en-EN', {
@@ -163,11 +162,11 @@ app.patch('/edit/:id', async(req, res)=>{
 	const {title, body, token} = req.body
 	const {id} = req.params
 
-	jwt.verify(token, process.env.SECRET_KEY, (err, decoded)=>{
+	jwt.verify(token, process.env.SECRET_KEY, async(err, decoded)=>{
 
-		if(err || decoded.role != 'writer'){		
+		if(!err && decoded.role == 'writer'){		
 
-			await db.collection('articles').updateOne({id: id}, {title: title, body: body})
+			await db.collection('articles').updateOne({id: id},  {$set: {title: title, body: body} })
 
 			res.end()
 		}

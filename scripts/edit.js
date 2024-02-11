@@ -18,8 +18,17 @@ $(document).ready(function () {
 
 function save(){
 
-	axios.post(`/save/${id}`, {body: text.value, title: title.value, token: token}).then((res)=>{
+	axios.patch(`/edit/${id}`, {body: text.value, title: title.value, token: token}).then((res)=>{
 
 		location.href = `/posts/${id}`
-	});
+	}).catch((err)=>{
+
+			if(err.response){
+
+				if(err.response.status == 403){
+
+					alert('Who told you about this page?')
+				}
+			}
+	})
 }
