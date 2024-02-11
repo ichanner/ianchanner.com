@@ -1,5 +1,6 @@
 
 const password = document.getElementById('password')
+const username = document.getElementById('useername')
 
 function login(){
 
@@ -9,9 +10,9 @@ function login(){
 	}
 	else{
 
-		axios.post("/auth", {password: password.value}).then((res)=>{
+		axios.post("/auth", {password: password.value, username: username.value}).then((res)=>{
 
-			localStorage.setItem('is_auth', true)
+			localStorage.setItem('token', res.data.token)
 
 			location.href = "/"
 		

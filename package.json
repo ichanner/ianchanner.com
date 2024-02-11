@@ -15,9 +15,11 @@
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^16.0.3",
+    "egoroof-blowfish": "^4.0.1",
     "env": "0.0.2",
     "express": "^4.18.2",
     "jquery": "^3.6.4",
+    "jsonwebtoken": "^9.0.2",
     "mongodb": "^5.1.0",
     "mongoose": "^7.0.0",
     "request-ip": "^3.3.0"

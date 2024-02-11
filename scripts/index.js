@@ -7,7 +7,9 @@ const container = document.getElementById('blog')
 function createPreview(title, id){
 
 	const div = document.createElement('div')
+	
 	div.setAttribute('class', 'child')
+	
 	const br = document.createElement('br')
 	const link = document.createElement('a')
 	const name = document.createTextNode(title)
@@ -22,13 +24,14 @@ function createPreview(title, id){
 function loadPreviews(first_time){
 
 	const next = first_time ? (Number(sessionStorage.getItem('index')) || 0) : index
-	const is_auth = localStorage.getItem('is_auth') || false
+	const token = localStorage.getItem('token')
 
-	axios.get('/articles/'+next.toString()+'?first_time='+first_time+'&is_auth='+is_auth).then((res)=>{
+	axios.get('/articles/'+next.toString()+'?first_time='+first_time+'&token='+token).then((res)=>{
 
 		res.data.forEach((article, i)=>{
 		
 			index+=1;
+			
 			if(count-1 == index) load_button.remove()
 
 			sessionStorage.setItem('index', index)
@@ -48,7 +51,6 @@ function loadPreviews(first_time){
 			    date_break.setAttribute('class', 'hr-sect')
 			    date_break.appendChild(text_node)
 			    container.appendChild(date_break)
-			   
 			    createPreview(article.title, article.id)
 			    last_day = day
 			}
