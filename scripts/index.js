@@ -24,9 +24,9 @@ function createPreview(title, id){
 function loadPreviews(first_time){
 
 	const next = first_time ? (Number(sessionStorage.getItem('index')) || 0) : index
-	const token = localStorage.getItem('token')
+	//const token = localStorage.getItem('token')
 
-	axios.get('/articles/'+next.toString()+'?first_time='+first_time+'&token='+token).then((res)=>{
+	axios.get('/articles/'+next.toString()+'?first_time='+first_time).then((res)=>{
 
 		res.data.forEach((article, i)=>{
 		

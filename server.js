@@ -90,18 +90,18 @@ app.get('/count', async(req, res)=>{
 app.get('/articles/:index', async(req, res)=>{
 
 	const {index} = req.params
-	const {first_time, token} = req.query
+	const {first_time} = req.query
 	const max = 10
 	const skip = first_time == 'true' ? 0 : index
 	const limit = first_time == 'true' ? (Number(index) < max ? max : index) : max
 	
-	jwt.verify(token, process.env.SECRET_KEY, async(err, decoded)=>{
+	//jwt.verify(token, process.env.SECRET_KEY, async(err, decoded)=>{
 
-		if(err){
+	//	if(err){
 
-			res.status(403).send()
-		}
-		else{
+	//		res.status(403).send()
+	//	}
+	//	else{
 
 			const articles = await db.collection('articles')
 				.find({})
@@ -111,8 +111,8 @@ app.get('/articles/:index', async(req, res)=>{
 				.toArray()
 
 			res.json(articles)
-		}
-	})
+		//}
+	//})
 	
 })
 
